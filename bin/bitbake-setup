@@ -259,12 +259,6 @@ def setup_bitbake_build(bitbake_config, layerdir, setupdir, thisdir, update_bb_c
     shell = "bash"
     fragments = bitbake_config.get("oe-fragments", []) + sorted(bitbake_config.get("oe-fragment-choices",{}).values())
     if fragments:
-        toolcfg_file = os.path.join(bitbake_builddir,'conf/toolcfg.conf')
-        toolcfg_comment = """# Run 'bitbake-config-build enable-fragment <fragment-name>' to enable additional fragments
-# or replace built-in ones (e.g. machine/<name> or distro/<name> to change MACHINE or DISTRO).
-"""
-        with open(toolcfg_file, 'w') as f:
-            f.write(toolcfg_comment)
         bb.process.run("{} -c '. {} && bitbake-config-build enable-fragment {}'".format(shell, init_script, " ".join(fragments)))
 
     if os.path.exists(backup_bitbake_confdir):
